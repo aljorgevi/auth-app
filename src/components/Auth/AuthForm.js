@@ -2,10 +2,13 @@ import { useState, useRef } from 'react'
 
 import classes from './AuthForm.module.css'
 
+const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`
+
 const AuthForm = () => {
   const emailInputRef = useRef()
   const passwordInputRef = useRef()
   const [isLogin, setIsLogin] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const switchAuthModeHandler = () => {
     setIsLogin(prevState => !prevState)
@@ -19,27 +22,30 @@ const AuthForm = () => {
 
     // optional: Add validation
 
+    setIsLoading(true)
     if (isLogin) {
       console.log('Login')
     } else {
-      fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDm2P40CKzGrP47SIlwDWTSdHnpVW7pEcY',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: enteredEmail,
-            password: enteredPassword,
-            returnSecureToken: true
-          }),
-          headers: { 'Content-Type': 'application/json' }
-        }
-      ).then(res => {
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => {
+        setIsLoading(false)
         if (res.ok) {
           // ...
         } else {
           return res.json().then(data => {
             // show an error modal
-            console.log(data)
+            let errorMessage = 'Authentication failed'
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message
+            }
+            alert(errorMessage)
           })
         }
       })
@@ -64,7 +70,10 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          {!isLoading && (
+            <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          )}
+          {isLoading && <p>is Loading....</p>}
           <button
             type='button'
             className={classes.toggle}
