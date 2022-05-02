@@ -1,11 +1,14 @@
-import classes from './StartingPageContent.module.css';
+import classes from './StartingPageContent.module.css'
+import welcome from '../../images/welcome.png'
 
 const StartingPageContent = () => {
   return (
     <section className={classes.starting}>
-      <h1>Welcome on Board!</h1>
+      <section className={classes.Container}>
+        <img src={welcome} alt='logo' />
+      </section>
     </section>
-  );
-};
+  )
+}
 
-export default StartingPageContent;
+export default StartingPageContent

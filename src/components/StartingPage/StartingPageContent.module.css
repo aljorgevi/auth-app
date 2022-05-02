@@ -6,3 +6,10 @@
 .starting h1 {
   font-size: 5rem;
 }
+
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -100px;
+}

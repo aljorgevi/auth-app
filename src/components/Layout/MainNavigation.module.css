@@ -1,7 +1,7 @@
 .header {
   width: 100%;
   height: 5rem;
-  background-color: #38015c;
+  background-color: #8c7851;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
@@ -30,7 +30,7 @@
 
 .header a {
   text-decoration: none;
-  color: white;
+  color: #fffffe;
   font-weight: bold;
 }
 
@@ -46,10 +46,9 @@
 }
 
 .header a:hover {
-  color: #c291e2;
+  color: #afa185;
 }
 
 .header button:hover {
-  background-color: #c291e2;
-  color: #38015c;
+  color: #afa185;
 }
