@@ -2,7 +2,8 @@ import { useState, useRef } from 'react'
 
 import classes from './AuthForm.module.css'
 
-const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`
+const urlSignUp = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`
+const urlLogin = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`
 
 const AuthForm = () => {
   const emailInputRef = useRef()
@@ -23,21 +24,22 @@ const AuthForm = () => {
     // optional: Add validation
 
     setIsLoading(true)
-    if (isLogin) {
-      console.log('Login')
-    } else {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true
-        }),
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => {
+    let url
+    isLogin ? (url = urlLogin) : (url = urlSignUp)
+
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+        returnSecureToken: true
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
         setIsLoading(false)
         if (res.ok) {
-          // ...
+          return res.json()
         } else {
           return res.json().then(data => {
             // show an error modal
@@ -45,11 +47,18 @@ const AuthForm = () => {
             if (data && data.error && data.error.message) {
               errorMessage = data.error.message
             }
-            alert(errorMessage)
+            // thowing an error here will cause the app to crash so we need to handle it in the catch.
+            throw new Error(errorMessage)
           })
         }
       })
-    }
+      .then(data => {
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err)
+        alert(err.message)
+      })
   }
 
   return (
