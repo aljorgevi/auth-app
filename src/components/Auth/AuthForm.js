@@ -1,11 +1,10 @@
 import { useState, useRef, useContext } from 'react'
 import AuthContext from '../../store/auth_context'
+import { urlSignUp, urlLogin } from '../../api'
 
 import classes from './AuthForm.module.css'
 
 // maybe add config folder to store the env variables... and then a api folder(where I call config) to stay the url.
-const urlSignUp = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`
-const urlLogin = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`
 
 const AuthForm = () => {
   const emailInputRef = useRef()
@@ -29,6 +28,7 @@ const AuthForm = () => {
     setIsLoading(true)
     let url
     isLogin ? (url = urlLogin) : (url = urlSignUp)
+    console.log({ url, enteredEmail, enteredPassword })
 
     fetch(url, {
       method: 'POST',
@@ -42,6 +42,7 @@ const AuthForm = () => {
       .then(res => {
         setIsLoading(false)
         if (res.ok) {
+          alert('Success')
           return res.json()
         } else {
           return res.json().then(data => {
