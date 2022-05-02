@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   // !!token is a boolean that is true if token is a string is not empty, and false if is a empty string.
   const userIsLoggenIn = !!token
 
-  const loginHandler = token => {
+  const loginHandler = (token, expirationTime) => {
     setToken(token)
     localStorage.setItem('token', token)
   }
