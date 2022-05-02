@@ -1,4 +1,5 @@
 import { useState, useRef, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import AuthContext from '../../store/auth_context'
 import { urlSignUp, urlLogin } from '../../api'
 
@@ -7,6 +8,7 @@ import classes from './AuthForm.module.css'
 // maybe add config folder to store the env variables... and then a api folder(where I call config) to stay the url.
 
 const AuthForm = () => {
+  const history = useHistory()
   const emailInputRef = useRef()
   const passwordInputRef = useRef()
   const [isLogin, setIsLogin] = useState(false)
@@ -58,6 +60,7 @@ const AuthForm = () => {
       })
       .then(data => {
         login(data.idToken)
+        history.replace('/')
       })
       .catch(err => {
         console.log(err)
