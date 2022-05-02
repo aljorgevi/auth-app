@@ -13,19 +13,8 @@ function App() {
   return (
     <Layout>
       <Switch>
-        <Route path='/' exact>
-          <HomePage />
-        </Route>
-        {!isLoggedIn && (
-          <Route path='/auth'>
-            <AuthPage />
-          </Route>
-        )}
-        {/* {isLoggedIn && (
-          <Route path='/profile'>
-            <UserProfile />
-          </Route>
-        )} */}
+        <Route path='/' exact component={HomePage} />
+        {!isLoggedIn && <Route path='/auth' component={AuthPage} />}
         <Route path='/profile'>
           {isLoggedIn ? <UserProfile /> : <Redirect to='/auth' />}
         </Route>
