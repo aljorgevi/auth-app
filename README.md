@@ -6,3 +6,4 @@ App build with react &amp; firebase for leaning purpose.
 2. Auth
 3. Firebase
 4. Env var
+5. Protected Resources
